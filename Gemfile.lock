@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    qless (0.10.2.pre)
+    qless (0.10.3.pre)
       redis (>= 2.2)
 
 GEM
@@ -120,3 +120,6 @@ DEPENDENCIES
   sinatra (~> 1.3.2)
   thin
   vegas (~> 0.1.11)
+
+BUNDLED WITH
+   1.13.7

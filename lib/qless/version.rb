@@ -1,3 +1,3 @@
 module Qless
-  VERSION = "0.10.2.pre"
+  VERSION = "0.10.3.pre"
 end
