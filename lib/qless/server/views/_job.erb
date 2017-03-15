@@ -1,4 +1,7 @@
 <% if job.instance_of?(Qless::Job) %>
+	<div class="hidden" id="job-json-<%= job.jid %>">
+		<%= job.to_hash.to_json %>
+	</div>
 	<div class="row" id="job-<%= job.jid.gsub('.', '') %>">
 	  <div class="col-md-12">
 	    <div class="row">
@@ -30,6 +33,13 @@
 	      </div>
 	      <div class="col-md-6 text-right">
           <div>
+            <div class="btn-group custora-job-button-group">
+              <% if (pt_tag = (job.tags || []).find { |tag| tag.match(/pt-(.*)/) }).nil? %>
+                <button title="Create Pivotal Story" class="btn btn-info" onclick="confirmation(this, 'Create Pivotal Story?', function() { createPivotalStory('<%= job.jid %>', fade) })"><i class="glyphicon glyphicon-copy"></i></button>
+              <% else %>
+                <button title="View Pivotal Story" class="btn btn-info" onclick="window.open('https://www.pivotaltracker.com/story/show/<%= $1 %>', '_blank')"><i class="glyphicon glyphicon-new-window"></i></button>
+              <% end %>
+            </div>
 	          <div class="btn-group custora-job-button-group">
 	            <% if (job.state != "complete") %>
 	            <button title="delete" class="btn btn-danger" onclick="confirmation(this, 'Delete?', function() { cancel('<%= job.jid %>', fade) })"><i class="glyphicon glyphicon-remove"></i></button>

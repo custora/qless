@@ -75,6 +75,10 @@
     </style>
 
     <script type="text/javascript">
+
+    window.pivotalToken = "<%= ENV["PIVOTAL_TOKEN"] %>";
+    window.pivotalProjectId = "<%= ENV["PIVOTAL_PROJECT_ID"] %>";
+
     /* This is a helper method to display an alert at the top of the page,
      * in a vein similar to that of Ruby's flash */
     var flash = function(message, t, duration) {
@@ -97,6 +101,49 @@
         success: obj.success || function() {},
         error: obj.error || function() {}
       });
+    }
+
+    var createPivotalStory = function(jid, cb) {
+      var json = JSON.parse($("#job-json-" + jid).text());
+      var storyData = jobToStory(json);
+
+      if (window.pivotalProjectId === "" && window.pivotalToken === "") {
+        alert("ENV['PIVOTAL_TOKEN'] and ENV['PIVOTAL_PROJECT_ID'] are not specified.");
+        return;
+      }
+
+      $.ajax({
+        url: `https://www.pivotaltracker.com/services/v5/projects/${window.pivotalProjectId}/stories`,
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        headers: {
+          "X-TrackerToken": window.pivotalToken
+        },
+        data: JSON.stringify(storyData),
+        processData: true,
+        success: function(resp) {
+          flash("Created Pivotal Story", 'success', 1500);
+          window.open(resp.url, '_blank')
+          tag(jid, "pt-" + resp.id, cb);
+        },
+        error: function(resp) {
+          flash('Error creating story: ' + resp.responseJSON.error);
+        },
+      });
+    }
+
+    var jobToStory = function(job) {
+      var data = {};
+
+      var siteId = job.tags.find((tag) => { return tag.substring(0, 5) == "site-" }).substring(5);
+
+      data.name = `${siteId}: ${(job.history[job.history.length - 1] || {}).group || "Unknown Error"}`;
+      data.description = `[Link to Job](${window.location.origin}/qless/jobs/${job.jid})\n\n` +
+        "`" + job.failure.message + "`";
+      data.story_type = "bug";
+      data.labels = ['bug', 'bugsnag'];
+      return data;
     }
 
     /* This is a helper method to move a job into a queue, and then it will
