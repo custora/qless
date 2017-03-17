@@ -76,8 +76,8 @@
 
     <script type="text/javascript">
 
-    window.pivotalToken = "<%= ENV["PIVOTAL_TOKEN"] %>";
-    window.pivotalProjectId = "<%= ENV["PIVOTAL_PROJECT_ID"] %>";
+    window.pivotalToken = "<%= $PIVOTAL_TOKEN %>";
+    window.pivotalProjectId = "<%= $PIVOTAL_PROJECT_ID %>";
 
     /* This is a helper method to display an alert at the top of the page,
      * in a vein similar to that of Ruby's flash */
