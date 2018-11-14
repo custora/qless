@@ -357,12 +357,7 @@ function Qless.cancel(...)
       })
       Qless.publish('log', encoded)
 
-      -- Remove this job from whatever worker has it, if any
-      if worker and (worker ~= '') then
-        redis.call('zrem', 'ql:w:' .. worker .. ':jobs', jid)
-        -- If necessary, send a message to the appropriate worker, too
-        Qless.publish('w:' .. worker, encoded)
-      end
+      Qless.kill_job(worker, encoded, jid)
 
       -- Remove it from that queue
       if queue then
@@ -1172,6 +1167,16 @@ function QlessJob:update(data)
   redis.call('hmset', QlessJob.ns .. self.jid, unpack(tmp))
 end
 
+-- Remove job from worker
+function Qless.kill_job(worker, encoded, jid)
+  -- Remove this job from whatever worker has it, if any
+  if worker and (worker ~= '') then
+    redis.call('zrem', 'ql:w:' .. worker .. ':jobs', jid)
+    -- If necessary, send a message to the appropriate worker, too
+    Qless.publish('w:' .. worker, encoded)
+  end
+end
+
 -- Times out the job now rather than when its lock is normally set to expire
 function QlessJob:timeout(now)
   local queue_name, state, worker = unpack(redis.call('hmget',
@@ -1195,6 +1200,7 @@ function QlessJob:timeout(now)
     })
     Qless.publish('w:' .. worker, encoded)
     Qless.publish('log', encoded)
+    Qless.kill_job(worker, encoded, self.jid)
     return queue_name
   end
 end
