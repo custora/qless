@@ -156,7 +156,8 @@ module Qless
 
       # Set the procline. Not supported on all systems
       def procline(value, in_signal_handler=true)
-        title = "Qless-#{Qless::VERSION}: #{value} at #{Time.now.iso8601}"
+        term = ' (term)' if @shutdown
+        title = "Qless#{term}: #{value} at #{Time.now.iso8601}"
         Process.setproctitle(title)
         log(:info, title)
       end
