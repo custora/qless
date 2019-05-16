@@ -95,6 +95,7 @@
       $.ajax({
         url: obj.url,
         type: 'POST',
+        contentType: 'application/json',
         dataType: 'json',
         data: JSON.stringify(obj.data),
         processData: false,
