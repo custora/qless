@@ -62,7 +62,7 @@
 </table>
 <% end %>
 
-<% failed_jobs = failed_jobs_by_type(include_tag: /^pt-/, exclude_tag: 'auto-gen-pt') %>
+<% failed_jobs = failed_jobs_by_type(include_tag: /^pt-/) %>
 <% failed_not_in_pt = failed_jobs[:not_tagged] %>
 <% failed_in_pt = failed_jobs[:tagged] %>
 
