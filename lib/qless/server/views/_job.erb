@@ -45,8 +45,6 @@
             <div class="btn-group custora-job-button-group">
               <% if (pt_tag = (job.tags || []).find { |tag| tag.match(/pt-(.*)/) }).nil? %>
                 <button title="Create Pivotal Story" class="btn btn-info" onclick="confirmation(this, 'Create Pivotal Story?', function() { createPivotalStory('<%= job.jid %>', fade) })"><i class="glyphicon glyphicon-copy"></i></button>
-              <% elsif (job.tags.find { |tag| tag.include?('auto-gen-pt')})%>
-                <button title="View Pivotal Story" class="btn btn-info" onclick="view_and_move_to_pt('<%=job.jid%>', '<%= $1 %>')"><i class="glyphicon glyphicon-new-window"></i></button>
               <% else %>
                 <button title="View Pivotal Story" class="btn btn-info" onclick="window.open('https://www.pivotaltracker.com/story/show/<%= $1 %>', '_blank')"><i class="glyphicon glyphicon-new-window"></i></button>
               <% end %>
