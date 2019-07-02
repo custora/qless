@@ -137,9 +137,10 @@
     var jobToStory = function(job) {
       var data = {};
 
-      var siteId = job.tags.find((tag) => { return tag.substring(0, 5) == "site-" }).substring(5);
+      var siteIdTag = job.tags.find((tag) => { return tag.substring(0, 5) == "site-" });
+      var namePrefix = siteIdTag ? siteIdTag.substring(5) : 'Non-site specific';
 
-      data.name = `${siteId}: ${(job.history[job.history.length - 1] || {}).group || "Unknown Error"}`;
+      data.name = `${namePrefix}: ${(job.history[job.history.length - 1] || {}).group || "Unknown Error"}`;
       data.description = `[Link to Job](${window.location.origin}/qless/jobs/${job.jid})\n\n` +
         "`" + job.failure.message.substring(0, 15000) + "`"; // keep well under 20k limit on description
       data.story_type = "bug";
