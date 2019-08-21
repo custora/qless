@@ -244,10 +244,25 @@ module Qless
     end
 
     get '/failed/:type/?' do
+      pivotal_label = ''
+
+      failed_jobs = if ['tagged', 'not_tagged'].include?(params[:pt])
+        pivotal_label = params[:pt] == 'tagged' ? "(In Pivotal)" : "(Not In Pivotal)"
+        jobs = failed_jobs_by_type(include_tag: /^pt-/)[params[:pt].to_sym][params[:type]]
+        {
+          "jobs" => jobs,
+          "total" => jobs.count,
+          "page_count" => 1,
+        }
+      else
+        paginated(client.jobs, :failed, params[:type])
+      end
+
       erb :failed_type, layout: true, locals: {
         title: 'Failed | ' + params[:type],
         type: params[:type],
-        failed: paginated(client.jobs, :failed, params[:type])
+        failed: failed_jobs,
+        pivotal_label: pivotal_label,
       }
     end
 

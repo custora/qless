@@ -85,12 +85,12 @@
     <tbody>
     <% failed_not_in_pt.sort_by { |t, jobs| -jobs.count }.each do |t, jobs| %>
     <tr class="failed-row">
-      <td class="large-text"><a href="<%= u "/failed/#{t}" %>"><%= t %></a></td>
-      <td class="failed-count"><a href="<%= u "/failed/#{t}" %>"><%= number_with_delimiter(jobs.count) %></a></td>
+      <td class="large-text"><a href="<%= u "/failed/#{t}?pt=not_tagged" %>"><%= t %></a></td>
+      <td class="failed-count"><a href="<%= u "/failed/#{t}?pt=not_tagged" %>"><%= number_with_delimiter(jobs.count) %></a></td>
     </tr>
     <tr class="failed-row-mobile">
-      <td class="failed-count"><a href="<%= u "/failed/#{t}" %>"><%= number_with_delimiter(jobs.count) %></a></td>
-      <td class="large-text"><a href="<%= u "/failed/#{t}" %>"><%= t %></a></td>
+      <td class="failed-count"><a href="<%= u "/failed/#{t}?pt=not_tagged" %>"><%= number_with_delimiter(jobs.count) %></a></td>
+      <td class="large-text"><a href="<%= u "/failed/#{t}?pt=not_tagged" %>"><%= t %></a></td>
     </tr>
     <% end %>
     </tbody>
@@ -110,12 +110,12 @@
     <tbody>
     <% failed_in_pt.sort_by { |t, jobs| -jobs.count }.each do |t, jobs| %>
     <tr class="failed-row">
-      <td class="large-text"><a href="<%= u "/failed/#{t}" %>"><%= t %></a></td>
-      <td class="failed-count"><a href="<%= u "/failed/#{t}" %>"><%= number_with_delimiter(jobs.count) %></a></td>
+      <td class="large-text"><a href="<%= u "/failed/#{t}?pt=tagged" %>"><%= t %></a></td>
+      <td class="failed-count"><a href="<%= u "/failed/#{t}?pt=tagged" %>"><%= number_with_delimiter(jobs.count) %></a></td>
     </tr>
     <tr class="failed-row-mobile">
-      <td class="failed-count"><a href="<%= u "/failed/#{t}" %>"><%= number_with_delimiter(jobs.count) %></a></td>
-      <td class="large-text"><a href="<%= u "/failed/#{t}" %>"><%= t %></a></td>
+      <td class="failed-count"><a href="<%= u "/failed/#{t}?pt=tagged" %>"><%= number_with_delimiter(jobs.count) %></a></td>
+      <td class="large-text"><a href="<%= u "/failed/#{t}?pt=tagged" %>"><%= t %></a></td>
     </tr>
     <% end %>
     </tbody>
