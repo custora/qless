@@ -3,8 +3,11 @@
     <div class="col-md-8">
       <h2>Type '<%= type %>' Failed Jobs</h2>
     </div>
-    <div class="col-md-4">
-      <div class="btn-group" style="float:right; margin-top: 5px">
+    <div class="col-md-4" style="text-align: right">
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="toggle_failure_collapse()">Toggle Errors</button>
+      </div>
+      <div class="btn-group">
         <button class="btn btn-danger" title="cancel" onclick="confirmation(this, 'Cancel?', function() { cancelall('<%= type %>', fade) })"><i class="glyphicon glyphicon-remove"></i></button>
         <button class="btn btn-success" title="retry all" onclick="retryall('<%= type %>', fade)"><i class="glyphicon glyphicon-repeat"></i></button>
       </div>

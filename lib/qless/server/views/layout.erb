@@ -25,11 +25,15 @@
 
     h2 {
       font-size: 20px;
-      line-height: 40px;
+      line-height: 20px;
     }
 
     pre {
       font-size: 12px;
+    }
+
+    .custora-job-failure-collapse {
+      max-height: 33px;
     }
 
     .btn-group span {
@@ -272,6 +276,10 @@
 
     var view_and_move_to_pt = function(jid, storyId) {
       window.open('https://www.pivotaltracker.com/story/show/' + storyId, '_blank');
+    }
+
+    var toggle_failure_collapse = function() {
+      $(".custora-job-failure").toggleClass("custora-job-failure-collapse");
     }
 
     /* Helper function for adding a tag to a job */
