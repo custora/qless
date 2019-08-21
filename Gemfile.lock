@@ -39,10 +39,6 @@ GEM
     columnize (0.3.6)
     daemons (1.2.3)
     debug_inspector (0.0.2)
-    debugger (1.6.2)
-      columnize (>= 0.3.1)
-      debugger-linecache (~> 1.2.0)
-      debugger-ruby_core_source (~> 1.2.3)
     debugger-linecache (1.2.0)
     diff-lcs (1.2.4)
     eventmachine (1.0.9.1)
@@ -145,7 +141,6 @@ PLATFORMS
 DEPENDENCIES
   byebug
   cane
-  debugger
   poltergeist (~> 1.0.0)
   pry
   pry-byebug
@@ -160,4 +155,4 @@ DEPENDENCIES
   timecop
 
 BUNDLED WITH
-   1.15.3
+   1.17.2
