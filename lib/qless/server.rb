@@ -128,7 +128,7 @@ module Qless
       end
 
       def failed_jobs_by_type(include_tag: nil)
-        jobs = client.jobs.failed.map { |k, _v| [k, client.jobs.failed(k)['jobs']] }.to_h
+        jobs = client.jobs.failed.map { |k, _v| [k, client.jobs.failed(k, 0, 10_000)['jobs']] }.to_h
         tag_filter = lambda { |j| !j.tags.grep(include_tag).empty? }
 
         {
