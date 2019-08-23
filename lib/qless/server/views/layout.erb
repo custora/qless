@@ -149,6 +149,8 @@
         "`" + job.failure.message.substring(0, 15000) + "`"; // keep well under 20k limit on description
       data.story_type = "bug";
       data.labels = ['bug', 'bugsnag'];
+      if (siteIdTag)
+        data.labels.push(siteIdTag);
       return data;
     }
 
