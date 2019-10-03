@@ -248,7 +248,7 @@ module Qless
 
       failed_jobs = if ['tagged', 'not_tagged'].include?(params[:pt])
         pivotal_label = params[:pt] == 'tagged' ? "(In Pivotal)" : "(Not In Pivotal)"
-        jobs = failed_jobs_by_type(include_tag: /^pt-/)[params[:pt].to_sym][params[:type]]
+        jobs = failed_jobs_by_type(include_tag: /^pt-/)[params[:pt].to_sym][params[:type]] || []
         {
           "jobs" => jobs,
           "total" => jobs.count,
