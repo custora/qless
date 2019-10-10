@@ -11,7 +11,13 @@ module Qless
     end
 
     def initialize
-      @replacements = { Dir.pwd => '.' }
+      @replacements = {}
+
+      begin
+        @replacements[Dir.pwd] = '.'
+      rescue Errno::ENOENT
+        # Don't worry if Dir.pwd can't be retrieved.
+      end
       @replacements[ENV['GEM_HOME']] = '<GEM_HOME>' if ENV.key?('GEM_HOME')
     end
 
