@@ -297,17 +297,41 @@
         url: '<%= u "/tag" %>',
         data: data,
         success : function() {
-          var div  = $('<div>').attr('class', 'btn-group').attr('style', 'float:left; margin-right: 10px;');
+          /*
+          <div class="btn-group custora-job-tags" style="float:left; margin-right: 10px;">
+            <span class="tag" style="line-height: 24px;"><a href="<!%= u "/tag/?tag=#{tag}" %>"><!%= tag %></a></span>
+				    <button class="btn btn-default custora-remove-button" onclick="untag('<!%= job.jid %>', '<!%= tag %>')">
+	            <i class="glyphicon glyphicon-remove custora-remove-icon"></i>
+	          </button>
+	        </div>
+					<ul class="custora-job-tag-list">
+						<li>
+							<a href="<!%= u "/tag/?tag=#{tag}" %>"><!%= tag %></a>
+							<span onclick="untag('<!%= job.jid %>', '<!%= tag %>')"><i class="glyphicon glyphicon-remove custora-remove-icon"></i></span><!%= %>
+						</li>
+					</ul>
+          */
+          var div  = $('<div>').attr('class', 'btn-group custora-job-tags').attr('style', 'float:left; margin-right: 10px;');
           var span = $('<span>').attr('class', 'tag').attr('style', 'line-height: 24px;');
-          var a = $('a').attr('href', "/tag/?tag=" + tag).text(tag);
-          var btn  = $('<button>').attr('class', 'btn btn-default').click(function() {
+          var a = $('<a>').attr('href', "/tag/?tag=" + tag).text(tag);
+          var btn  = $('<button>').attr('class', 'btn btn-default custora-remove-button').click(function() {
             untag(jid, tag);
           });
-          btn.append($('<i>').attr('class', 'glyphicon glyphicon-remove'));
+          btn.append($('<i>').attr('class', 'glyphicon glyphicon-remove custora-remove-icon'));
           span.append(a);
           div.append(span).append(btn);
+
+          var ul = $('<ul>').attr('class', 'custora-job-tag-list');
+          var li = $('<li>');
+          var untagSpan = $('<span>').click(function() {
+            untag(jid, tag);
+          });
+          untagSpan.append($('<i>').attr('class', 'glyphicon glyphicon-remove custora-remove-icon'));
+          li.append(a.clone()).append(untagSpan);
+          ul.append(li);
+
           $('#job-' + jid.replace('.', '')).find('.add-tag input').val(null)
-          $('#job-' + jid.replace('.', '')).find('.tags').append(div);
+          $('#job-' + jid.replace('.', '')).find('.custora-job-tags-container').append(div).append(ul);
           flash('Tagged ' + jid + ' with ' + tag, 'success', 1500);
         }, error: function() {
           flash('Failed to tag ' + jid + ' with ' + tag);

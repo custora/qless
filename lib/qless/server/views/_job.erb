@@ -112,20 +112,22 @@
 					<div style="margin-right: 10px">
 						<h3 class="custora-job-data-label"><small>Tags:</small></h3>
 					</div>
-	        <% job.tags.each do |tag| %>
-	        <div class="btn-group custora-job-tags" style="float:left; margin-right: 10px;">
-            <span class="tag" style="line-height: 24px;"><a href="<%= u "/tag/?tag=#{tag}" %>"><%= tag %></a></span>
-				    <button class="btn btn-default custora-remove-button" onclick="untag('<%= job.jid %>', '<%= tag %>')">
-	            <i class="glyphicon glyphicon-remove custora-remove-icon"></i>
-	          </button>
-	        </div>
-					<ul class="custora-job-tag-list">
-						<li>
-							<a href="<%= u "/tag/?tag=#{tag}" %>"><%= tag %></a>
-							<span onclick="untag('<%= job.jid %>', '<%= tag %>')"><i class="glyphicon glyphicon-remove custora-remove-icon"></i></span><%= %>
-						</li>
-					</ul>
-	        <% end %>
+					<div class="custora-job-tags-container">
+						<% job.tags.each do |tag| %>
+						<div class="btn-group custora-job-tags" style="float:left; margin-right: 10px;">
+							<span class="tag" style="line-height: 24px;"><a href="<%= u "/tag/?tag=#{tag}" %>"><%= tag %></a></span>
+							<button class="btn btn-default custora-remove-button" onclick="untag('<%= job.jid %>', '<%= tag %>')">
+								<i class="glyphicon glyphicon-remove custora-remove-icon"></i>
+							</button>
+						</div>
+						<ul class="custora-job-tag-list">
+							<li>
+								<a href="<%= u "/tag/?tag=#{tag}" %>"><%= tag %></a>
+								<span onclick="untag('<%= job.jid %>', '<%= tag %>')"><i class="glyphicon glyphicon-remove custora-remove-icon"></i></span><%= %>
+							</li>
+						</ul>
+						<% end %>
+					</div>
 
 	        <!-- One for adding new tags -->
 	        <div class="btn-group add-tag" style="float:left">
