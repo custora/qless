@@ -83,6 +83,15 @@
     window.pivotalToken = "<%= $PIVOTAL_TOKEN %>";
     window.pivotalProjectId = "<%= $PIVOTAL_PROJECT_ID %>";
 
+    window.jira = {
+      url: "<%= $JIRA_URL %>",
+      appPort: "<%= $APP_PORT %>",
+      project: "<%= $JIRA_PROJECT %>",
+      components: "<%= $JIRA_COMPONENTS %>".split(","),
+      issueType: "<%= $JIRA_ISSUE_TYPE %>",
+      controllerApiToken: "<%= $JIRA_CONTROLLER_API_TOKEN %>"
+    };
+
     /* This is a helper method to display an alert at the top of the page,
      * in a vein similar to that of Ruby's flash */
     var flash = function(message, t, duration) {
@@ -152,6 +161,47 @@
       if (siteIdTag)
         data.labels.push(siteIdTag);
       return data;
+    }
+
+    var createJIRAIssue = function(jid, cb) {
+      var json = JSON.parse($("#job-json-" + jid).text());
+      var storyData = jobToJIRAIssue(json);
+
+      $.ajax({
+        url: `//${window.location.hostname}:${window.jira.appPort}/jira/create`,
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify(storyData),
+        processData: true,
+        success: function(resp) {
+          flash("Created JIRA Issue", 'success', 1500);
+          window.open(resp.url, '_blank');
+          tag(jid, "pt-jira-" + resp.key, cb);
+        },
+        error: function(resp) {
+          flash('Error creating issue: ' + resp.responseText || resp.responseJSON.error);
+        },
+      });
+    }
+
+    var jobToJIRAIssue = function(job) {
+      var siteIdTag = job.tags.find((tag) => { return tag.substring(0, 5) == "site-" });
+      var siteId = siteIdTag ? siteIdTag.substring(5) : 'Non-site specific';
+
+      var summary = siteId + ": " + (job.history[job.history.length - 1] || {}).group || `${job.klass_name} - Unknown Error`;
+      var description = `${window.location.origin}/qless/jobs/${job.jid}\n\n` +
+        "`" + job.failure.message.substring(0, 15000) + "`"; // keep well under 20k limit on description
+
+      return {
+        project: window.jira.project,
+        issue_type: window.jira.issueType,
+        summary: summary,
+        description: description,
+        component_names: window.jira.components,
+        api_token: window.jira.controllerApiToken,
+        site_id: siteIdTag ? siteId : null,
+      };
     }
 
     /* This is a helper method to move a job into a queue, and then it will
