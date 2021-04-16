@@ -43,9 +43,14 @@
 	            </ul>
 	          </div>
             <div class="btn-group custora-job-button-group">
-              <% if (pt_tag = (job.tags || []).find { |tag| tag.match(/pt-(.*)/) }).nil? %>
-                <button title="Create Pivotal Story" class="btn btn-info" onclick="confirmation(this, 'Create Pivotal Story?', function() { createPivotalStory('<%= job.jid %>', fade) })"><i class="glyphicon glyphicon-copy"></i></button>
-              <% else %>
+              <% if (pt_tags = (job.tags || []).grep(/pt-(.*)/)).empty? %>
+                <button title="Create JIRA Issue" class="btn btn-info" onclick="confirmation(this, 'Create JIRA Issue?', function() { createJIRAIssue('<%= job.jid %>', fade) })"><i class="glyphicon glyphicon-copy"></i></button>
+                <button title="Create Pivotal Story" class="btn btn-default" onclick="confirmation(this, 'Create Pivotal Story?', function() { createPivotalStory('<%= job.jid %>', fade) })"><i class="glyphicon glyphicon-copy"></i></button>
+							<% end %>
+              <% if pt_tags.find { |tag| tag.match(/pt-jira-(.*)/) } %>
+							  <button title="View JIRA Issue" class="btn btn-info" onclick="window.open(window.jira.url + '/browse/<%= $1 %>', '_blank')"><i class="glyphicon glyphicon-new-window"></i></button>
+							<% end %>
+							<% if pt_tags.find { |tag| !tag.match?(/jira/) && tag.match(/pt-(.*)/) } %>
                 <button title="View Pivotal Story" class="btn btn-info" onclick="window.open('https://www.pivotaltracker.com/story/show/<%= $1 %>', '_blank')"><i class="glyphicon glyphicon-new-window"></i></button>
               <% end %>
             </div>

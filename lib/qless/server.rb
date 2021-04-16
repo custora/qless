@@ -247,7 +247,7 @@ module Qless
       pivotal_label = ''
 
       failed_jobs = if ['tagged', 'not_tagged'].include?(params[:pt])
-        pivotal_label = params[:pt] == 'tagged' ? "(In Pivotal)" : "(Not In Pivotal)"
+        pivotal_label = params[:pt] == 'tagged' ? "(In JIRA/Pivotal)" : "(Not In JIRA/Pivotal)"
         jobs = failed_jobs_by_type(include_tag: /^pt-/)[params[:pt].to_sym][params[:type]] || []
         {
           "jobs" => jobs,
